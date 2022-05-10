@@ -26,15 +26,18 @@ public class Test {
         Print how many students are ScienceStudent with message -> "Science students = {numberOfScienceStudents}"
          */
 
+        //        String[] names = {"Abe", "Data", "Regina"};
+        //        String[] names2  = Arrays.copyOf(names, 5);
+        //
+        //        System.out.println(Arrays.toString(names2));
+
+        Scanner studentInput = new Scanner(System.in);
         ArrayList<Student> studentList = new ArrayList<>();
-        int mathClass = 0, scienceClass = 0;
 
         do {
-            Scanner studentInput = new Scanner(System.in);
             System.out.println(UserQuestions.askToJoin);
-            String join = studentInput.nextLine();
+            if (studentInput.nextLine().toLowerCase().startsWith("y")) {
 
-            if (join.equalsIgnoreCase("Y")) {
                 System.out.println(UserQuestions.askFirstName);
                 String firstName = studentInput.nextLine();
 
@@ -47,45 +50,42 @@ public class Test {
 
                 try {
                     Permission.checkAge(age);
-                } catch (Exception e) {
-                    e.printStackTrace();
 
-                }
+                    System.out.println(UserQuestions.askGender);
+                    String gender = studentInput.nextLine();
 
-                System.out.println(UserQuestions.askGender);
-                String gender = studentInput.nextLine();
+                    System.out.println(UserQuestions.askClassName);
+                    String className = studentInput.nextLine();
 
-                System.out.println(UserQuestions.askClassName);
-                String className = studentInput.nextLine();
-
-                try {
                     Permission.checkClassName(className);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                if (className.equalsIgnoreCase("Math")) {
-                    mathClass++;
+                    studentList.add(
+                            className.equalsIgnoreCase("Math") ?
+                                    new MathStudent(firstName, lastName, age, gender, className) :
+                                    new ScienceStudent(firstName, lastName, age, gender, className));
+
                     System.out.println("Congratulations! You are registered for " + className + " class.");
-                    studentList.add(new MathStudent(firstName, lastName, age, gender, className));
 
-                } else if (className.equalsIgnoreCase("Science")) {
-                    scienceClass++;
-                    System.out.println("Congratulation! You are registered for " + className + " class.");
-                    studentList.add(new ScienceStudent(firstName, lastName, age, gender, className));
+                } catch (Exception e) {
+                    //        System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
 
             }
         }
-           while (studentList.size() < 3);
+            while (studentList.size() < 3) ;
 
-        for (Student str : studentList) {
-            System.out.println(str);
-        }
-        if (studentList.size() == 3) {
-            System.out.println("Math students = " + mathClass);
-            System.out.println("Science students = " + scienceClass);
-        }
+            int mathClass = 0, scienceClass = 0;
 
-        }
+            for (Student str : studentList) {
+                if (str.getClassName().equalsIgnoreCase("Math")) mathClass++;
+                else scienceClass++;
+                System.out.println(str);
+            }
+
+            System.out.println("Math students = " + mathClass +
+                    "\nScience students = " + scienceClass);
+
+
+    }
 }

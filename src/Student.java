@@ -35,7 +35,7 @@ public class Student {
     HERE!
     Provide public getter method for className only
      */
-    public static String getClassName(String className){
+    public static String getClassName(){
         return className;
     }
 
